@@ -109,6 +109,10 @@
 			"reset ; "						\
 		"fi\0"
 
+#define BOOTENV_CUSTOM			\
+	"start_custom="			\
+		"usb start\0"
+
 #define BOOTENV_UMS			\
 	"start_ums="			\
 		"ums 0 mmc ${mmcdev}\0"
@@ -139,7 +143,12 @@
 
 /* Boot modes */
 
-#ifdef CONFIG_SYS_BOOT_MODE_UMS
+#ifdef CONFIG_SYS_BOOT_MODE_CUSTOM
+
+#undef CONFIG_BOOTCOMMAND
+#define CONFIG_BOOTCOMMAND	"run start_custom"
+
+#elif CONFIG_SYS_BOOT_MODE_UMS
 
 #undef CONFIG_BOOTCOMMAND
 #define CONFIG_BOOTCOMMAND	"run start_ums"
@@ -197,6 +206,7 @@
 	BOOTENV_OPTEE				\
 	BOOTENV_TFTP				\
 	BOOTENV_UMS				\
+	BOOTENV_CUSTOM			\
 	BOOTENV_VERIFIED_OPEN			\
 	BOOTENV
 
